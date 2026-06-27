@@ -6,6 +6,7 @@ import { useEyeTurnStore } from "@/lib/store";
 import { getWebGazerInstance, loadWebGazer } from "@/lib/webgazerLoader";
 import { getMediaPipeLandmarks } from "@/lib/mediapipeEar";
 import { computeEar, smoothEar } from "@/utils/blink";
+import { isSecureCameraContext } from "@/utils/device";
 
 function hideWebGazerUi(wg: WebGazerInstance) {
   wg.showVideoPreview(false);
@@ -15,8 +16,27 @@ function hideWebGazerUi(wg: WebGazerInstance) {
   wg.applyKalmanFilter(true);
 }
 
+function cameraErrorMessage(err: unknown): string {
+  if (err instanceof DOMException) {
+    if (err.name === "NotAllowedError") {
+      return "Camera permission denied. Allow camera access in Safari/Chrome settings and try again.";
+    }
+    if (err.name === "NotFoundError") {
+      return "No camera found on this device.";
+    }
+    if (err.name === "NotReadableError") {
+      return "Camera is in use by another app. Close other apps using the camera and retry.";
+    }
+    return err.message;
+  }
+  if (err instanceof Error) return err.message;
+  return "Could not start the camera.";
+}
+
 export function useGazeTracker() {
   const [isTracking, setIsTracking] = useState(false);
+  const [isStarting, setIsStarting] = useState(false);
+  const [cameraError, setCameraError] = useState<string | null>(null);
   const wgRef = useRef<WebGazerInstance | null>(null);
   const smoothEarRef = useRef<number | null>(null);
   const startingRef = useRef(false);
@@ -42,10 +62,19 @@ export function useGazeTracker() {
 
   const start = useCallback(async () => {
     if (!settings.eyeTrackingEnabled || startingRef.current || activeRef.current) {
-      return;
+      return false;
+    }
+
+    if (!isSecureCameraContext()) {
+      setCameraError(
+        "Camera requires a secure connection (HTTPS). Use https:// or localhost on this device."
+      );
+      return false;
     }
 
     startingRef.current = true;
+    setIsStarting(true);
+    setCameraError(null);
 
     try {
       const wg = await loadWebGazer();
@@ -67,13 +96,17 @@ export function useGazeTracker() {
       activeRef.current = true;
       setIsTracking(true);
       setStoreTracking(true);
+      return true;
     } catch (err) {
       console.error("Failed to start WebGazer:", err);
       activeRef.current = false;
       setIsTracking(false);
       setStoreTracking(false);
+      setCameraError(cameraErrorMessage(err));
+      return false;
     } finally {
       startingRef.current = false;
+      setIsStarting(false);
     }
   }, [setStoreTracking, settings.eyeTrackingEnabled, updateEarFromLandmarks]);
 
@@ -112,6 +145,8 @@ export function useGazeTracker() {
 
   return {
     isTracking,
+    isStarting,
+    cameraError,
     start,
     stop,
     calibrate,

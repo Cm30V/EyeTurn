@@ -25,15 +25,29 @@ These also run automatically on `npm install`.
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in **Chrome** or **Edge**.
+Open [http://localhost:3000](http://localhost:3000) in **Chrome**, **Edge**, or **Safari** (Mac, iPhone, iPad).
 
 ### Quick start
 
 1. Click **Upload PDF** or **Demo Mode**
-2. Allow webcam access when prompted
+2. Allow front-camera access when prompted (on iPhone/iPad, tap **Enable camera & calibrate**)
 3. Complete **blink calibration** (open eyes, then blink 3 times fast like turning a page)
-4. Repeat your **learned 3-blink rhythm** to go next, or blink **5–6 times** to go back
-5. Use keyboard shortcuts anytime as a fallback
+4. Blink **2–3 times** (default) to go next, or **5–6 times** to go back
+5. Use on-screen arrows or keyboard shortcuts as fallback
+
+## iPhone & iPad
+
+EyeTurn uses the **same blink detection** on all devices (MediaPipe + EAR via WebGazer). No separate mobile app or mode.
+
+**On iPhone/iPad:**
+
+1. Open the site in **Safari** over **HTTPS** (required for camera — Vercel deploys include this)
+2. Load a PDF, then tap **Enable camera & calibrate** (Safari requires a tap before camera access)
+3. Prop the device so your face is visible to the **front camera**
+4. Complete calibration, then blink to turn pages
+5. Use toolbar **← / →** buttons if blink detection misses a turn
+
+**Tips:** Good lighting, hold the device steady, and recalibrate if detection drifts.
 
 ## How blink detection works (MediaPipe + EAR)
 
@@ -71,7 +85,7 @@ Tap **Recalibrate blinks** in Settings anytime to re-teach your rhythm.
 
 | Action | How it works |
 |--------|----------------|
-| Next page | Matches your **calibrated 3-blink pattern** (count + timing) |
+| Next page | **2–3** blinks by default (configurable in Settings), or learned fast-blink pattern |
 | Previous page | **5–6** blinks (configurable min/max in Settings) |
 
 After your last blink, a short pause (~350ms) confirms the gesture. Rapid blinks in succession are supported.
@@ -106,7 +120,7 @@ Open the gear icon in the viewer toolbar:
 - **Accuracy**: Webcam blink detection is approximate — not medical-grade. False positives/negatives vary by person and lighting.
 - **Lighting**: Bright, even front lighting improves detection.
 - **Head movement**: Keep your head relatively still during calibration and practice.
-- **Browser support**: Chrome and Edge are primary targets.
+- **Browser support**: Chrome, Edge, and Safari on Mac, iPhone, and iPad. Mobile requires HTTPS.
 - **PDF size**: Very large PDFs may use more memory; pages are rendered on demand.
 
 ## Tech stack

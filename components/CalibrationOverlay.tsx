@@ -42,11 +42,11 @@ export function CalibrationOverlay() {
     isEarClosed(currentEar, blinkCalibration.threshold);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-6 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 pb-[max(1rem,env(safe-area-inset-bottom))] pt-[max(1rem,env(safe-area-inset-top))] backdrop-blur-sm">
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
-        className="glass-panel w-full max-w-md rounded-3xl p-8 text-center"
+        className="glass-panel max-h-[90dvh] w-full max-w-md overflow-y-auto rounded-3xl p-6 text-center sm:p-8"
       >
         <h2 className="text-xl font-semibold">{phaseCopy.title}</h2>
         <p className="mt-3 text-sm text-[var(--text-secondary)]">{phaseCopy.body}</p>

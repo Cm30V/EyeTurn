@@ -1,12 +1,22 @@
 import type { WebGazerInstance } from "@/types";
+import { isMobileOrTablet } from "@/utils/device";
 
 const WEBGAZER_SCRIPT = "/webgazer/webgazer.js";
 const FACE_MESH_PATH = "/webgazer/mediapipe/face_mesh";
 
 let loadPromise: Promise<WebGazerInstance> | null = null;
 
-function configureWebGazer(wg: WebGazerInstance) {
+export function configureWebGazer(wg: WebGazerInstance): void {
   wg.params.faceMeshSolutionPath = FACE_MESH_PATH;
+
+  const mobile = typeof window !== "undefined" && isMobileOrTablet();
+  wg.params.camConstraints = {
+    video: {
+      facingMode: "user",
+      width: mobile ? { ideal: 640, max: 1280 } : { min: 320, ideal: 640, max: 1920 },
+      height: mobile ? { ideal: 480, max: 720 } : { min: 240, ideal: 480, max: 1080 },
+    },
+  };
 }
 
 export function loadWebGazer(): Promise<WebGazerInstance> {

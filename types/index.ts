@@ -88,5 +88,6 @@ export interface WebGazerInstance {
     showFaceOverlay: boolean;
     showFaceFeedbackBox: boolean;
     showPredictionPoints: boolean;
+    camConstraints?: MediaStreamConstraints;
   };
 }

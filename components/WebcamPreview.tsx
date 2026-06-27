@@ -42,7 +42,7 @@ export function WebcamPreview() {
   if (!showPreview || !isTracking) return null;
 
   return (
-    <div className="fixed bottom-4 left-4 z-40 overflow-hidden rounded-2xl border border-white/20 shadow-glass glass-panel">
+    <div className="fixed bottom-[max(1rem,env(safe-area-inset-bottom))] left-[max(1rem,env(safe-area-inset-left))] z-40 overflow-hidden rounded-2xl border border-white/20 shadow-glass glass-panel">
       <canvas
         ref={canvasRef}
         className="block h-28 w-36 object-cover"

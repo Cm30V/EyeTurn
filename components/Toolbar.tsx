@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useCallback } from "react";
 import { useEyeTurnStore } from "@/lib/store";
+import { supportsDocumentFullscreen } from "@/utils/device";
 
 export function Toolbar() {
   const {
@@ -19,6 +20,7 @@ export function Toolbar() {
   } = useEyeTurnStore();
 
   const toggleFullscreen = useCallback(async () => {
+    if (!supportsDocumentFullscreen()) return;
     if (!document.fullscreenElement) {
       await document.documentElement.requestFullscreen();
       setFullscreen(true);
@@ -29,7 +31,7 @@ export function Toolbar() {
   }, [setFullscreen]);
 
   return (
-    <header className="flex shrink-0 items-center justify-between gap-4 border-b border-[var(--glass-border)] glass-panel px-4 py-3">
+    <header className="flex shrink-0 items-center justify-between gap-2 border-b border-[var(--glass-border)] glass-panel px-3 py-2 sm:gap-4 sm:px-4 sm:py-3">
       <div className="flex items-center gap-2">
         <Link
           href="/"
@@ -67,9 +69,11 @@ export function Toolbar() {
 
         <div className="mx-1 hidden h-6 w-px bg-[var(--glass-border)] sm:block" />
 
-        <ToolbarButton onClick={toggleFullscreen} label="Toggle fullscreen">
-          {isFullscreen ? "⤢" : "⛶"}
-        </ToolbarButton>
+        {supportsDocumentFullscreen() && (
+          <ToolbarButton onClick={toggleFullscreen} label="Toggle fullscreen">
+            {isFullscreen ? "⤢" : "⛶"}
+          </ToolbarButton>
+        )}
 
         <ToolbarButton onClick={() => setSettingsOpen(true)} label="Settings">
           ⚙
@@ -111,7 +115,7 @@ function ToolbarButton({
       onClick={onClick}
       disabled={disabled}
       aria-label={label}
-      className="flex h-9 min-w-9 items-center justify-center rounded-xl text-sm font-medium transition hover:bg-black/5 disabled:opacity-30 dark:hover:bg-white/10"
+      className="flex h-10 min-w-10 touch-manipulation items-center justify-center rounded-xl text-sm font-medium transition hover:bg-black/5 active:bg-black/10 disabled:opacity-30 dark:hover:bg-white/10"
     >
       {children}
     </button>

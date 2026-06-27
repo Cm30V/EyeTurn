@@ -33,7 +33,7 @@ export function BlinkIndicator() {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 12 }}
-          className="fixed bottom-4 right-4 z-40 rounded-2xl glass-panel px-4 py-3 shadow-glass"
+          className="fixed bottom-[max(1rem,env(safe-area-inset-bottom))] right-[max(1rem,env(safe-area-inset-right))] z-40 rounded-2xl glass-panel px-4 py-3 shadow-glass"
         >
           <p className="text-xs text-[var(--text-secondary)]">Blink count</p>
           <p className="text-2xl font-semibold tabular-nums">{sessionBlinkCount}</p>
