@@ -1,8 +1,8 @@
 # EyeTurn
 
-**Hands-free sheet music using blink detection.**
+**Hands-free sheet music using blink detection MADE WITH CURSOR!.**
 
-EyeTurn is a local-first web app that lets musicians upload PDF sheet music and turn pages without using their hands — by blinking in counted patterns detected via webcam.
+EyeTurn is a local-first web app that lets musicians upload PDF sheet music and turn pages by BLINKING (NO HANDS) in counted patterns detected via webcam.
 
 ## Installation
 
