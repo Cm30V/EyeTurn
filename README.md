@@ -4,7 +4,7 @@
 
 EyeTurn is a local-first web app that lets musicians upload PDF sheet music and turn pages by BLINKING (NO HANDS) in counted patterns detected via webcam.
 
-## Watch my yt vid showcasing it
+## Click img below to watch my yt vid showcasing it
 [![Watch the video](https://img.youtube.com/vi/R2LWvmxs73Q/0.jpg)](https://www.youtube.com/watch?v=R2LWvmxs73Q)
 
 
